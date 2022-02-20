@@ -5,6 +5,9 @@ public class Employee {
     private int retirementPercent;
     private int age;
 
+    public Employee() {
+    }
+
     public Employee(String firstName, String lastName, double monthlySalary) {
         setFirstName(firstName);
         setLastName(lastName);
@@ -67,9 +70,20 @@ public class Employee {
 
     public void payday() {
         double totalPayout = getMonthlySalary() / 2;
-        double maxRetirement = age>60 ? 500 : 300;
+        double maxRetirement;
+        if (age > 60) {
+            maxRetirement = 500;
+        } else {
+            maxRetirement = 300;
+        }
+        // sets the initial retirement payout based on the percentage, up to the max
         double retirementPayout = Math.min(totalPayout * (retirementPercent / 100.), maxRetirement);
+        // sets the amount the company matches to the minimum of:
+        // - $100
+        // - the amount already contributed
+        // - the amount needed to meet the max
         double matchedPayout = Math.min(Math.min(100, retirementPayout), maxRetirement - retirementPayout);
+        // finds the actual payout ater retirement savings
         double payoutPayout = totalPayout - retirementPayout;
 
         System.out.printf("Payout: %.2f\n", payoutPayout);
