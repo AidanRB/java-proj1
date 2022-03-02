@@ -65,13 +65,13 @@ public class Employee {
     }
 
     public void setAge(int age) {
-        if (age < 120 && age >= 0) {
+        if (age <= 120 && age >= 0) {
             this.age = age;
         }
     }
 
     private int getMaxRetirement() {
-        if (age > 60) {
+        if (age >= 60) {
             return 500;
         } else {
             return 300;
@@ -84,10 +84,12 @@ public class Employee {
     }
 
     public double getMatchedPayout() {
-        // sets the amount the company matches to the minimum of:
-        // - $100
-        // - the amount already contributed
-        // - the amount needed to meet the max
+        /**
+         * sets the amount the company matches to the minimum of:
+         *  - $100
+         *  - the amount already contributed
+         *  - the amount needed to meet the max
+         */
         return Math.min(Math.min(100, getInitialRetirementPayout()), getMaxRetirement() - getInitialRetirementPayout());
     }
 
@@ -97,7 +99,7 @@ public class Employee {
 
     public double getPayout() {
         // finds the actual payout after retirement savings
-        return getMonthlySalary() / 2 - (getInitialRetirementPayout() + getMatchedPayout());
+        return getMonthlySalary() / 2 - getInitialRetirementPayout();
     }
 
     public void payday() {

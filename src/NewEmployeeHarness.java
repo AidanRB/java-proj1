@@ -19,7 +19,6 @@ public class NewEmployeeHarness {
         employee.setRetirementPercent(75);
         employee.payday();
         employee.setAge(70);
-        employee.setRetirementPercent(75);
         employee.payday();
     }
 }
