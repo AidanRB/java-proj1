@@ -45,7 +45,9 @@ public class Employee {
     }
 
     public void setYearlySalary(double yearlySalary) {
-        this.yearlySalary = yearlySalary;
+        if (yearlySalary > 0) {
+            this.yearlySalary = yearlySalary;
+        }
     }
 
     public int getRetirementPercent() {
