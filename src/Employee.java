@@ -68,27 +68,43 @@ public class Employee {
         }
     }
 
-    public void payday() {
-        double totalPayout = getMonthlySalary() / 2;
-        double maxRetirement;
+    private int getMaxRetirement() {
         if (age > 60) {
-            maxRetirement = 500;
+            return 500;
         } else {
-            maxRetirement = 300;
+            return 300;
         }
+    }
+
+    public double getInitialRetirementPayout() {
         // sets the initial retirement payout based on the percentage, up to the max
-        double retirementPayout = Math.min(totalPayout * (retirementPercent / 100.), maxRetirement);
+        return Math.min(getMonthlySalary() / 2 * (retirementPercent / 100.), getMaxRetirement());
+    }
+
+    public double getMatchedPayout() {
         // sets the amount the company matches to the minimum of:
         // - $100
         // - the amount already contributed
         // - the amount needed to meet the max
-        double matchedPayout = Math.min(Math.min(100, retirementPayout), maxRetirement - retirementPayout);
-        // finds the actual payout ater retirement savings
-        double payoutPayout = totalPayout - retirementPayout;
+        return Math.min(Math.min(100, getInitialRetirementPayout()), getMaxRetirement() - getInitialRetirementPayout());
+    }
 
-        System.out.printf("Payout: %.2f\n", payoutPayout);
-        System.out.printf("Max: %.2f\n", maxRetirement);
-        System.out.printf("Retirement: %.2f\n", retirementPayout);
-        System.out.printf("Matched: %.2f\n", matchedPayout);
+    public double getRetirementPayout() {
+        return getInitialRetirementPayout() + getMatchedPayout();
+    }
+
+    public double getPayout() {
+        // finds the actual payout after retirement savings
+        return getMonthlySalary() / 2 - (getInitialRetirementPayout() + getMatchedPayout());
+    }
+
+    public void payday() {
+        payday(1);
+    }
+
+    public void payday(double periods) {
+        System.out.printf("Payout: %.2f\n", getPayout() * periods);
+        System.out.printf("Retirement (%.2f matched): %.2f\n",
+                getMatchedPayout() * periods, (getInitialRetirementPayout() + getMatchedPayout()) * periods);
     }
 }

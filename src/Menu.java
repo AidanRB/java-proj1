@@ -8,7 +8,7 @@ public class Menu {
             System.out.println("\n0. Quit");
             System.out.println("1. Create Employee");
             System.out.print(": ");
-            
+
             int choice = scanner.nextInt();
             if (choice == 0) {
                 break;
@@ -20,7 +20,7 @@ public class Menu {
 
     public static Employee createEmployee() {
         Employee newEmployee = new Employee();
-        
+
         boolean running = true;
         while(running) {
             System.out.println("\n0. Return to main menu");
@@ -30,9 +30,9 @@ public class Menu {
             System.out.println("4. Preview Payday Statement");
             System.out.println("5. Retirement Help");
             System.out.print(": ");
-    
+
             int choice = scanner.nextInt();
-            
+
             switch (choice) {
                 case 0:
                     running = false;
@@ -58,7 +58,7 @@ public class Menu {
                 case 5:
                     newEmployee = retirementHelp(newEmployee);
                     break;
-            
+
                 default:
                     break;
             }
@@ -73,6 +73,7 @@ public class Menu {
             System.out.println("0. Return to previous menu");
             System.out.println("1. Set Retirement Percentage");
             System.out.println("2. View Retirement Scenarios");
+            System.out.print(": ");
 
             int choice = scanner.nextInt();
 
@@ -85,12 +86,44 @@ public class Menu {
                     int retirementPercent = scanner.nextInt();
                     employee.setRetirementPercent(retirementPercent);
                     break;
-            
+                case 2:
+                    int percent = employee.getRetirementPercent();
+                    System.out.println("\n0% contribution:");
+                    employee.setRetirementPercent(0);
+                    employee.payday(24);
+                    System.out.println("Savings by 65: "
+                            + compound(employee.getRetirementPayout() * 24, 2, 65 - employee.getAge()));
+
+                    System.out.println("\n10% contribution:");
+                    employee.setRetirementPercent(10);
+                    employee.payday(24);
+                    System.out.println("Savings by 65: "
+                            + compound(employee.getRetirementPayout() * 24, 2, 65 - employee.getAge()));
+
+                    System.out.println(percent + "\n% (current) contribution:");
+                    employee.setRetirementPercent(percent);
+                    employee.payday(24);
+                    System.out.println("Savings by 65: "
+                            + compound(employee.getRetirementPayout() * 24, 2, 65 - employee.getAge()));
+                    System.out.println();
+
+                    int yearsUntil65 = 65 - employee.getAge();
+                    System.out.println(yearsUntil65);
+
                 default:
                     break;
             }
         }
-        
+
         return employee;
+    }
+
+    static double compound(double input, int interest, int periods) {
+        double total = 0;
+        for (int i = 0; i < periods; i++) {
+            total += input;
+            total *= 1 + interest / 100.;
+        }
+        return total;
     }
 }
